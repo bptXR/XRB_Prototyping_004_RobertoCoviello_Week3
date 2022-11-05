@@ -218,67 +218,67 @@ namespace Interaction
             handle.up = (transform.up * yComp) + (transform.right * xComp) + (transform.forward * zComp);
         }
 
-        void OnDrawGizmosSelected()
-        {
-            var angleStartPoint = transform.position;
-
-            if (handle != null)
-                angleStartPoint = handle.position;
-
-            const float k_AngleLength = 0.25f;
-
-            if (joystickMotion != JoystickType.LeftRight)
-            {
-                Gizmos.color = Color.green;
-                var axisPoint1 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(maxAngle, 0.0f, 0.0f) * Vector3.up) *
-                                 k_AngleLength;
-                var axisPoint2 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(-maxAngle, 0.0f, 0.0f) * Vector3.up) *
-                                 k_AngleLength;
-                Gizmos.DrawLine(angleStartPoint, axisPoint1);
-                Gizmos.DrawLine(angleStartPoint, axisPoint2);
-
-                if (deadZoneAngle > 0.0f)
-                {
-                    Gizmos.color = Color.red;
-                    axisPoint1 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(deadZoneAngle, 0.0f, 0.0f) *
-                                                              Vector3.up) * k_AngleLength;
-                    axisPoint2 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(-deadZoneAngle, 0.0f, 0.0f) *
-                                                              Vector3.up) * k_AngleLength;
-                    Gizmos.DrawLine(angleStartPoint, axisPoint1);
-                    Gizmos.DrawLine(angleStartPoint, axisPoint2);
-                }
-            }
-
-            if (joystickMotion != JoystickType.FrontBack)
-            {
-                Gizmos.color = Color.green;
-                var axisPoint1 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, maxAngle) * Vector3.up) *
-                                 k_AngleLength;
-                var axisPoint2 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -maxAngle) * Vector3.up) *
-                                 k_AngleLength;
-                Gizmos.DrawLine(angleStartPoint, axisPoint1);
-                Gizmos.DrawLine(angleStartPoint, axisPoint2);
-
-                if (deadZoneAngle > 0.0f)
-                {
-                    Gizmos.color = Color.red;
-                    axisPoint1 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, deadZoneAngle) *
-                                                              Vector3.up) * k_AngleLength;
-                    axisPoint2 = angleStartPoint +
-                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -deadZoneAngle) *
-                                                              Vector3.up) * k_AngleLength;
-                    Gizmos.DrawLine(angleStartPoint, axisPoint1);
-                    Gizmos.DrawLine(angleStartPoint, axisPoint2);
-                }
-            }
-        }
+        // void OnDrawGizmosSelected()
+        // {
+        //     var angleStartPoint = transform.position;
+        //
+        //     if (handle != null)
+        //         angleStartPoint = handle.position;
+        //
+        //     const float k_AngleLength = 0.25f;
+        //
+        //     if (joystickMotion != JoystickType.LeftRight)
+        //     {
+        //         Gizmos.color = Color.green;
+        //         var axisPoint1 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(maxAngle, 0.0f, 0.0f) * Vector3.up) *
+        //                          k_AngleLength;
+        //         var axisPoint2 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(-maxAngle, 0.0f, 0.0f) * Vector3.up) *
+        //                          k_AngleLength;
+        //         Gizmos.DrawLine(angleStartPoint, axisPoint1);
+        //         Gizmos.DrawLine(angleStartPoint, axisPoint2);
+        //
+        //         if (deadZoneAngle > 0.0f)
+        //         {
+        //             Gizmos.color = Color.red;
+        //             axisPoint1 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(deadZoneAngle, 0.0f, 0.0f) *
+        //                                                       Vector3.up) * k_AngleLength;
+        //             axisPoint2 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(-deadZoneAngle, 0.0f, 0.0f) *
+        //                                                       Vector3.up) * k_AngleLength;
+        //             Gizmos.DrawLine(angleStartPoint, axisPoint1);
+        //             Gizmos.DrawLine(angleStartPoint, axisPoint2);
+        //         }
+        //     }
+        //
+        //     if (joystickMotion != JoystickType.FrontBack)
+        //     {
+        //         Gizmos.color = Color.green;
+        //         var axisPoint1 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, maxAngle) * Vector3.up) *
+        //                          k_AngleLength;
+        //         var axisPoint2 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -maxAngle) * Vector3.up) *
+        //                          k_AngleLength;
+        //         Gizmos.DrawLine(angleStartPoint, axisPoint1);
+        //         Gizmos.DrawLine(angleStartPoint, axisPoint2);
+        //
+        //         if (deadZoneAngle > 0.0f)
+        //         {
+        //             Gizmos.color = Color.red;
+        //             axisPoint1 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, deadZoneAngle) *
+        //                                                       Vector3.up) * k_AngleLength;
+        //             axisPoint2 = angleStartPoint +
+        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -deadZoneAngle) *
+        //                                                       Vector3.up) * k_AngleLength;
+        //             Gizmos.DrawLine(angleStartPoint, axisPoint1);
+        //             Gizmos.DrawLine(angleStartPoint, axisPoint2);
+        //         }
+        //     }
+        // }
 
         void OnValidate()
         {
