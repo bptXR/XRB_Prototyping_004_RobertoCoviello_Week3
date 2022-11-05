@@ -4,34 +4,23 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Unity.XRContent.Interaction
+namespace Interaction
 {
-    /// <summary>
-    /// An interactable that can be pushed by a direct interactor's movement
-    /// </summary>
     public class XRPushButton : XRBaseInteractable
     {
         class PressInfo
         {
-            internal IXRHoverInteractor m_Interactor;
-            internal bool m_InPressRegion = false;
-            internal bool m_WrongSide = false;
+            internal IXRHoverInteractor interactor;
+            internal bool inPressRegion = false;
+            internal bool wrongSide = false;
         }
 
         [Serializable]
         public class ValueChangeEvent : UnityEvent<float> { }
 
-        [SerializeField]
-        [Tooltip("The object that is visually pressed down")]
-        Transform m_Button = null;
-
-        [SerializeField]
-        [Tooltip("The distance the button can be pressed")]
-        float m_PressDistance = 0.1f;
-
-        [SerializeField]
-        [Tooltip("Extra distance for clicking the button down")]
-        float m_PressBuffer = 0.01f;
+        [SerializeField] private Transform button = null;
+        [SerializeField] private float pressDistance = 0.1f;
+        [SerializeField] private float pressBuffer = 0.01f;
 
         [SerializeField]
         [Tooltip("Offset from the button base to start testing for push")]
@@ -67,12 +56,12 @@ namespace Unity.XRContent.Interaction
         /// <summary>
         /// The object that is visually pressed down
         /// </summary>
-        public Transform Button { get { return m_Button; } set { m_Button = value; } }
+        public Transform Button { get { return button; } set { button = value; } }
 
         /// <summary>
         /// The distance the button can be pressed
         /// </summary>
-        public float PressDistance { get { return m_PressDistance; } set { m_PressDistance = value; } }
+        public float PressDistance { get { return pressDistance; } set { pressDistance = value; } }
 
         /// <summary>
         /// The distance (in percentage from 0 to 1) the button is currently being held down
@@ -107,7 +96,7 @@ namespace Unity.XRContent.Interaction
 
                 m_Toggled = value;
                 if (m_Toggled)
-                    SetButtonHeight(-m_PressDistance);
+                    SetButtonHeight(-pressDistance);
                 else
                     SetButtonHeight(0.0f);
             }
@@ -123,8 +112,8 @@ namespace Unity.XRContent.Interaction
 
         void Start()
         {
-            if (m_Button != null)
-                m_BaseButtonPosition = m_Button.position;
+            if (button != null)
+                m_BaseButtonPosition = button.position;
         }
 
         protected override void OnEnable()
@@ -132,7 +121,7 @@ namespace Unity.XRContent.Interaction
             base.OnEnable();
 
             if (m_Toggled)
-                SetButtonHeight(-m_PressDistance);
+                SetButtonHeight(-pressDistance);
             else
                 SetButtonHeight(0.0f);
 
@@ -149,7 +138,7 @@ namespace Unity.XRContent.Interaction
 
         void StartHover(HoverEnterEventArgs args)
         {
-            m_HoveringInteractors.Add(args.interactorObject, new PressInfo { m_Interactor = args.interactorObject });
+            m_HoveringInteractors.Add(args.interactorObject, new PressInfo { interactor = args.interactorObject });
         }
 
         void EndHover(HoverExitEventArgs args)
@@ -159,7 +148,7 @@ namespace Unity.XRContent.Interaction
             if (m_HoveringInteractors.Count == 0)
             {
                 if (m_ToggleButton && m_Toggled)
-                    SetButtonHeight(-m_PressDistance);
+                    SetButtonHeight(-pressDistance);
                 else
                     SetButtonHeight(0.0f);
             }
@@ -183,36 +172,36 @@ namespace Unity.XRContent.Interaction
             var minimumHeight = 0.0f;
 
             if (m_ToggleButton && m_Toggled)
-                minimumHeight = -m_PressDistance;
+                minimumHeight = -pressDistance;
 
             // Go through each interactor
             foreach (var pressInfo in m_HoveringInteractors.Values)
             {
-                var interactorTransform = pressInfo.m_Interactor.GetAttachTransform(this);
+                var interactorTransform = pressInfo.interactor.GetAttachTransform(this);
                 var localOffset = transform.InverseTransformVector(interactorTransform.position - m_BaseButtonPosition);
 
                 var withinButtonRegion = (Mathf.Abs(localOffset.x) < m_ButtonSize && Mathf.Abs(localOffset.z) < m_ButtonSize);
                 if (withinButtonRegion)
                 {
-                    if (!pressInfo.m_InPressRegion)
+                    if (!pressInfo.inPressRegion)
                     {
-                        pressInfo.m_WrongSide = (localOffset.y < m_ButtonOffset);
+                        pressInfo.wrongSide = (localOffset.y < m_ButtonOffset);
                     }
 
-                    if (!pressInfo.m_WrongSide)
+                    if (!pressInfo.wrongSide)
                         minimumHeight = Mathf.Min(minimumHeight, localOffset.y - m_ButtonOffset);
                 }
 
-                pressInfo.m_InPressRegion = withinButtonRegion;
+                pressInfo.inPressRegion = withinButtonRegion;
             }
 
-            minimumHeight = Mathf.Max(minimumHeight, -(m_PressDistance + m_PressBuffer));
+            minimumHeight = Mathf.Max(minimumHeight, -(pressDistance + pressBuffer));
 
             // If button height goes below certain amount, enter press mode
-            var pressed = m_ToggleButton ? (minimumHeight <= -(m_PressDistance + m_PressBuffer)) : (minimumHeight < -m_PressDistance);
+            var pressed = m_ToggleButton ? (minimumHeight <= -(pressDistance + pressBuffer)) : (minimumHeight < -pressDistance);
 
-            var currentDistance = Mathf.Max(0f, -minimumHeight - m_PressBuffer);
-            m_Value = currentDistance / m_PressDistance;
+            var currentDistance = Mathf.Max(0f, -minimumHeight - pressBuffer);
+            m_Value = currentDistance / pressDistance;
 
             if (m_ToggleButton)
             {
@@ -253,28 +242,28 @@ namespace Unity.XRContent.Interaction
 
         void SetButtonHeight(float height)
         {
-            if (m_Button == null)
+            if (button == null)
                 return;
 
-            Vector3 newPosition = m_Button.localPosition;
+            Vector3 newPosition = button.localPosition;
             newPosition.y = height;
-            m_Button.localPosition = newPosition;
+            button.localPosition = newPosition;
         }
 
         void OnDrawGizmosSelected()
         {
             var pressStartPoint = Vector3.zero;
 
-            if (m_Button != null)
+            if (button != null)
             {
-                pressStartPoint = m_Button.localPosition;
+                pressStartPoint = button.localPosition;
             }
 
-            pressStartPoint.y += m_ButtonOffset - (m_PressDistance * 0.5f);
+            pressStartPoint.y += m_ButtonOffset - (pressDistance * 0.5f);
 
             Gizmos.color = Color.green;
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireCube(pressStartPoint, new Vector3(m_ButtonSize, m_PressDistance, m_ButtonSize));
+            Gizmos.DrawWireCube(pressStartPoint, new Vector3(m_ButtonSize, pressDistance, m_ButtonSize));
         }
 
         void OnValidate()

@@ -18,7 +18,9 @@ namespace Interaction
         }
 
         [Serializable]
-        public class ValueChangeEvent : UnityEvent<float> { }
+        public class ValueChangeEvent : UnityEvent<float>
+        {
+        }
 
         [SerializeField] private JoystickType joystickMotion = JoystickType.BothCircle;
         [SerializeField] private Transform handle = null;
@@ -32,9 +34,19 @@ namespace Interaction
         [SerializeField] private ValueChangeEvent onValueChangeY = new();
 
         private IXRSelectInteractor _selectInteractor;
-        
-        public JoystickType JoystickMotion { get { return joystickMotion; } set { joystickMotion = value; } }
-        public Transform Handle { get { return handle; } set { handle = value; } }
+
+        public JoystickType JoystickMotion
+        {
+            get { return joystickMotion; }
+            set { joystickMotion = value; }
+        }
+
+        public Transform Handle
+        {
+            get { return handle; }
+            set { handle = value; }
+        }
+
         public Vector2 Value
         {
             get { return value; }
@@ -48,35 +60,31 @@ namespace Interaction
             }
         }
 
-        /// <summary>
-        /// If true, the joystick will return to center on release
-        /// </summary>
-        public bool RecenterOnRelease { get { return recenterOnRelease; } set { recenterOnRelease = value; } }
+        public bool RecenterOnRelease
+        {
+            get { return recenterOnRelease; }
+            set { recenterOnRelease = value; }
+        }
 
-        /// <summary>
-        /// Maximum angle the joystick can move
-        /// </summary>
-        public float MaxAngle { get { return maxAngle; } set { maxAngle = value; } }
+        public float MaxAngle
+        {
+            get { return maxAngle; }
+            set { maxAngle = value; }
+        }
 
-        /// <summary>
-        /// Minimum amount the joystick must move off the center to register changes
-        /// </summary>
-        public float DeadZoneAngle { get { return deadZoneAngle; } set { deadZoneAngle = value; } }
+        public float DeadZoneAngle
+        {
+            get { return deadZoneAngle; }
+            set { deadZoneAngle = value; }
+        }
 
-        /// <summary>
-        /// Events to trigger when the joystick's x value changes
-        /// </summary>
         public ValueChangeEvent OnValueChangeX => onValueChangeX;
-
-        /// <summary>
-        /// Events to trigger when the joystick's y value changes
-        /// </summary>
         public ValueChangeEvent OnValueChangeY => onValueChangeY;
 
         void Start()
         {
-            if (recenterOnRelease)
-                SetHandleAngle(Vector2.zero);
+            if (!recenterOnRelease) return;
+            SetHandleAngle(Vector2.zero);
         }
 
         protected override void OnEnable()
@@ -93,11 +101,8 @@ namespace Interaction
             base.OnDisable();
         }
 
-        private void StartGrab(SelectEnterEventArgs args)
-        {
-            _selectInteractor = args.interactorObject;
-        }
-
+        private void StartGrab(SelectEnterEventArgs args) => _selectInteractor = args.interactorObject;
+        
         private void EndGrab(SelectExitEventArgs arts)
         {
             UpdateValue();
@@ -225,16 +230,24 @@ namespace Interaction
             if (joystickMotion != JoystickType.LeftRight)
             {
                 Gizmos.color = Color.green;
-                var axisPoint1 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(maxAngle, 0.0f, 0.0f) * Vector3.up) * k_AngleLength;
-                var axisPoint2 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(-maxAngle, 0.0f, 0.0f) * Vector3.up) * k_AngleLength;
+                var axisPoint1 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(maxAngle, 0.0f, 0.0f) * Vector3.up) *
+                                 k_AngleLength;
+                var axisPoint2 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(-maxAngle, 0.0f, 0.0f) * Vector3.up) *
+                                 k_AngleLength;
                 Gizmos.DrawLine(angleStartPoint, axisPoint1);
                 Gizmos.DrawLine(angleStartPoint, axisPoint2);
 
                 if (deadZoneAngle > 0.0f)
                 {
                     Gizmos.color = Color.red;
-                    axisPoint1 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(deadZoneAngle, 0.0f, 0.0f) * Vector3.up) * k_AngleLength;
-                    axisPoint2 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(-deadZoneAngle, 0.0f, 0.0f) * Vector3.up) * k_AngleLength;
+                    axisPoint1 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(deadZoneAngle, 0.0f, 0.0f) *
+                                                              Vector3.up) * k_AngleLength;
+                    axisPoint2 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(-deadZoneAngle, 0.0f, 0.0f) *
+                                                              Vector3.up) * k_AngleLength;
                     Gizmos.DrawLine(angleStartPoint, axisPoint1);
                     Gizmos.DrawLine(angleStartPoint, axisPoint2);
                 }
@@ -243,16 +256,24 @@ namespace Interaction
             if (joystickMotion != JoystickType.FrontBack)
             {
                 Gizmos.color = Color.green;
-                var axisPoint1 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, maxAngle) * Vector3.up) * k_AngleLength;
-                var axisPoint2 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -maxAngle) * Vector3.up) * k_AngleLength;
+                var axisPoint1 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, maxAngle) * Vector3.up) *
+                                 k_AngleLength;
+                var axisPoint2 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -maxAngle) * Vector3.up) *
+                                 k_AngleLength;
                 Gizmos.DrawLine(angleStartPoint, axisPoint1);
                 Gizmos.DrawLine(angleStartPoint, axisPoint2);
 
                 if (deadZoneAngle > 0.0f)
                 {
                     Gizmos.color = Color.red;
-                    axisPoint1 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, deadZoneAngle) * Vector3.up) * k_AngleLength;
-                    axisPoint2 = angleStartPoint + transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -deadZoneAngle) * Vector3.up) * k_AngleLength;
+                    axisPoint1 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, deadZoneAngle) *
+                                                              Vector3.up) * k_AngleLength;
+                    axisPoint2 = angleStartPoint +
+                                 transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -deadZoneAngle) *
+                                                              Vector3.up) * k_AngleLength;
                     Gizmos.DrawLine(angleStartPoint, axisPoint1);
                     Gizmos.DrawLine(angleStartPoint, axisPoint2);
                 }
