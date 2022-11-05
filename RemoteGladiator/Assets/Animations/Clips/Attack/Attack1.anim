@@ -56531,7 +56531,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 1.0666667
-    functionName: DoDamage
+    functionName: AttackEnemy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

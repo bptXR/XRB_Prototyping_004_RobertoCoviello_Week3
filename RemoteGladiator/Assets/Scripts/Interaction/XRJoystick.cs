@@ -102,7 +102,7 @@ namespace Interaction
         }
 
         private void StartGrab(SelectEnterEventArgs args) => _selectInteractor = args.interactorObject;
-        
+
         private void EndGrab(SelectExitEventArgs arts)
         {
             UpdateValue();
@@ -151,11 +151,9 @@ namespace Interaction
         {
             var lookDirection = GetLookDirection();
 
-            // Get up/down angle and left/right angle
             var upDownAngle = Mathf.Atan2(lookDirection.z, lookDirection.y) * Mathf.Rad2Deg;
             var leftRightAngle = Mathf.Atan2(lookDirection.x, lookDirection.y) * Mathf.Rad2Deg;
 
-            // Extract signs
             var signX = Mathf.Sign(leftRightAngle);
             var signY = Mathf.Sign(upDownAngle);
 
@@ -164,7 +162,6 @@ namespace Interaction
 
             var stickValue = new Vector2(leftRightAngle, upDownAngle) * (1.0f / maxAngle);
 
-            // Clamp the stick value between 0 and 1 when doing everything but circular stick motion
             if (joystickMotion != JoystickType.BothCircle)
             {
                 stickValue.x = Mathf.Clamp01(stickValue.x);
@@ -172,25 +169,20 @@ namespace Interaction
             }
             else
             {
-                // With circular motion, if the stick value is greater than 1, we normalize
-                // This way, an extremely strong value in one direction will influence the overall stick direction
                 if (stickValue.magnitude > 1.0f)
                 {
                     stickValue.Normalize();
                 }
             }
 
-            // Rebuild the angle values for visuals
             leftRightAngle = stickValue.x * signX * maxAngle;
             upDownAngle = stickValue.y * signY * maxAngle;
 
-            // Apply deadzone and sign back to the logical stick value
             var deadZone = deadZoneAngle / maxAngle;
             var aliveZone = (1.0f - deadZone);
             stickValue.x = Mathf.Clamp01((stickValue.x - deadZone)) / aliveZone;
             stickValue.y = Mathf.Clamp01((stickValue.y - deadZone)) / aliveZone;
 
-            // Re-apply signs
             stickValue.x *= signX;
             stickValue.y *= signY;
 
@@ -217,68 +209,6 @@ namespace Interaction
 
             handle.up = (transform.up * yComp) + (transform.right * xComp) + (transform.forward * zComp);
         }
-
-        // void OnDrawGizmosSelected()
-        // {
-        //     var angleStartPoint = transform.position;
-        //
-        //     if (handle != null)
-        //         angleStartPoint = handle.position;
-        //
-        //     const float k_AngleLength = 0.25f;
-        //
-        //     if (joystickMotion != JoystickType.LeftRight)
-        //     {
-        //         Gizmos.color = Color.green;
-        //         var axisPoint1 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(maxAngle, 0.0f, 0.0f) * Vector3.up) *
-        //                          k_AngleLength;
-        //         var axisPoint2 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(-maxAngle, 0.0f, 0.0f) * Vector3.up) *
-        //                          k_AngleLength;
-        //         Gizmos.DrawLine(angleStartPoint, axisPoint1);
-        //         Gizmos.DrawLine(angleStartPoint, axisPoint2);
-        //
-        //         if (deadZoneAngle > 0.0f)
-        //         {
-        //             Gizmos.color = Color.red;
-        //             axisPoint1 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(deadZoneAngle, 0.0f, 0.0f) *
-        //                                                       Vector3.up) * k_AngleLength;
-        //             axisPoint2 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(-deadZoneAngle, 0.0f, 0.0f) *
-        //                                                       Vector3.up) * k_AngleLength;
-        //             Gizmos.DrawLine(angleStartPoint, axisPoint1);
-        //             Gizmos.DrawLine(angleStartPoint, axisPoint2);
-        //         }
-        //     }
-        //
-        //     if (joystickMotion != JoystickType.FrontBack)
-        //     {
-        //         Gizmos.color = Color.green;
-        //         var axisPoint1 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, maxAngle) * Vector3.up) *
-        //                          k_AngleLength;
-        //         var axisPoint2 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -maxAngle) * Vector3.up) *
-        //                          k_AngleLength;
-        //         Gizmos.DrawLine(angleStartPoint, axisPoint1);
-        //         Gizmos.DrawLine(angleStartPoint, axisPoint2);
-        //
-        //         if (deadZoneAngle > 0.0f)
-        //         {
-        //             Gizmos.color = Color.red;
-        //             axisPoint1 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, deadZoneAngle) *
-        //                                                       Vector3.up) * k_AngleLength;
-        //             axisPoint2 = angleStartPoint +
-        //                          transform.TransformDirection(Quaternion.Euler(0.0f, 0.0f, -deadZoneAngle) *
-        //                                                       Vector3.up) * k_AngleLength;
-        //             Gizmos.DrawLine(angleStartPoint, axisPoint1);
-        //             Gizmos.DrawLine(angleStartPoint, axisPoint2);
-        //         }
-        //     }
-        // }
 
         void OnValidate()
         {
