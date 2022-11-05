@@ -1,147 +1,65 @@
+using System;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
-using DG.Tweening;
 using Random = UnityEngine.Random;
 
-namespace Enemies
+public class Enemy : MonoBehaviour
 {
-    public class Enemy : MonoBehaviour
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] attackSounds;
+    [SerializeField] private AudioClip walkingSound;
+
+    private NavMeshAgent _enemyNavMesh;
+    private Transform _playerTransform;
+    private Gladiator _gladiator;
+    private Animator _anim;
+
+    private static readonly int Idle = Animator.StringToHash("Idle");
+
+    private void Awake()
     {
-        [SerializeField] private int damageToPlayer = 20;
+        _enemyNavMesh = GetComponent<NavMeshAgent>();
+        _gladiator = FindObjectOfType<Gladiator>();
+        _playerTransform = _gladiator.transform;
+        _anim = GetComponent<Animator>();
+    }
 
-        public int cost;
-        public Enemy enemyPrefab;
+    private void Start()
+    {
+        _enemyNavMesh.speed = Random.Range(1.5f, 2.8f);
+    }
 
-        [SerializeField] private AudioSource audioSource;
-        [SerializeField] private AudioClip[] attackSounds;
-        [SerializeField] private AudioClip[] gettingHitSounds;
-        [SerializeField] private AudioClip[] dieSounds;
-        [SerializeField] private AudioClip walkingSound;
+    private void Update() => _enemyNavMesh.SetDestination(_playerTransform.position);
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        // Audio
+    }
 
-        //private Player _player;
-        private NavMeshAgent _enemy;
-        [SerializeField] private Transform _playerTransform;
-        private Animator _anim;
+    private void OnTriggerStay(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        if (!_gladiator.isDead) return;
+        StopEnemy();
+    }
 
-        private bool _isDead;
-        private bool _isAttacking;
-        private bool _isWalking = true;
-        private int _damageToEnemy;
+    private void Sounds(AudioClip[] clips)
+    {
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+        audioSource.PlayOneShot(clip);
+    }
 
-        private static readonly int Attack = Animator.StringToHash("Attack");
-        private static readonly int AttackIndex = Animator.StringToHash("AttackIndex");
-        private static readonly int Die = Animator.StringToHash("Die");
-        private static readonly int DieIndex = Animator.StringToHash("DieIndex");
-        private static readonly int Walk = Animator.StringToHash("Walk");
+    public void FootStep()
+    {
+        audioSource.PlayOneShot(walkingSound);
+    }
 
-        private void Awake()
-        {
-            _enemy = GetComponent<NavMeshAgent>();
-            // _player = FindObjectOfType<Player>();
-            // _playerTransform = _player.transform;
-            _anim = GetComponent<Animator>();
-        }
-
-        private void Start()
-        {
-            //healthBar.SetMaxHealth(maxHealth);
-            _enemy.speed = Random.Range(1.5f, 2.8f);
-        }
-
-        private void Update()
-        {
-            if (!_isDead)
-                _enemy.SetDestination(_playerTransform.position);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!other.CompareTag("Player") || _isDead) return;
-            _enemy.isStopped = true;
-            _isWalking = false;
-            _isAttacking = true;
-            _anim.SetInteger(AttackIndex, Random.Range(0, 7));
-            _anim.SetTrigger(Attack);
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.CompareTag("Player") || _isDead) return;
-            _enemy.isStopped = false;
-            _isWalking = true;
-            _isAttacking = false;
-            _anim.SetTrigger(Walk);
-        }
-
-        // public void Hit(Arrow arrow)
-        // {
-        //     DisableCollider(arrow);
-        //
-        //     if (!_isDead)
-        //         TakeDamage(arrow);
-        // }
-        //
-        // private void DisableCollider(Arrow arrow)
-        // {
-        //     if (arrow.TryGetComponent(out Collider collider))
-        //         collider.enabled = false;
-        // }
-        //
-        // private void TakeDamage(Arrow arrow)
-        // {
-        //     _damageToEnemy = arrow.damageToEnemy;
-        //     currentHealth -= _damageToEnemy;
-        //     healthBar.SetHealth(currentHealth);
-        //
-        //     if (currentHealth <= 0)
-        //     {
-        //         KillEnemy();
-        //     }
-        //     else
-        //     {
-        //         Sounds(gettingHitSounds);
-        //     }
-        // }
-
-        private void KillEnemy()
-        {
-            _isDead = true;
-            _enemy.isStopped = true;
-            _anim.SetInteger(DieIndex, Random.Range(0, 7));
-            _anim.SetTrigger(Die);
-
-            Sounds(dieSounds);
-
-            // Destroy(this.GetComponent<Rigidbody>());
-            Destroy(_enemy);
-            //   Destroy(this.GetComponent<c>());
-        }
-
-        // private void OnDestroy()
-        // {
-        //     if (GameObject.FindGameObjectWithTag("WaveSpawner") == null) return;
-        //     GameObject.FindGameObjectWithTag("WaveSpawner").GetComponent<WaveSpawner>().spawnedEnemies
-        //         .Remove(enemyPrefab);
-        // }
-
-        private void Sounds(AudioClip[] clips)
-        {
-            AudioClip clip = clips[Random.Range(0, clips.Length)];
-            audioSource.PlayOneShot(clip);
-        }
-
-        // public void DoDamage()
-        // {
-        //     Sounds(attackSounds);
-        //
-        //     if (!_isAttacking) return;
-        //     int currentPlayerHealth = _player.currentHealth - damageToPlayer;
-        //     _player.TakeDamage(currentPlayerHealth);
-        // }
-
-        public void FootStep()
-        {
-            audioSource.PlayOneShot(walkingSound);
-        }
+    private void StopEnemy()
+    {
+        _enemyNavMesh.isStopped = true;
+        audioSource.enabled = false;
+        _anim.SetTrigger(Idle);
     }
 }
