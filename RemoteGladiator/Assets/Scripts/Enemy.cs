@@ -7,10 +7,6 @@ namespace Enemies
 {
     public class Enemy : MonoBehaviour
     {
-        [SerializeField] private int maxHealth = 100;
-        [SerializeField] private int currentHealth;
-        //[SerializeField] private HealthBar healthBar;
-        [SerializeField] private SkinnedMeshRenderer meshRenderer;
         [SerializeField] private int damageToPlayer = 20;
 
         public int cost;
@@ -48,7 +44,6 @@ namespace Enemies
 
         private void Start()
         {
-            currentHealth = maxHealth;
             //healthBar.SetMaxHealth(maxHealth);
             _enemy.speed = Random.Range(1.5f, 2.8f);
         }
@@ -117,7 +112,6 @@ namespace Enemies
 
             Sounds(dieSounds);
 
-            meshRenderer.materials[0].DOFade(0, 5).OnComplete(() => Destroy(gameObject));
             // Destroy(this.GetComponent<Rigidbody>());
             Destroy(_enemy);
             //   Destroy(this.GetComponent<c>());
