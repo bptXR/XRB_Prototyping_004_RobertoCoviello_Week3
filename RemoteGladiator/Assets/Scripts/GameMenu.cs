@@ -52,5 +52,7 @@ public class GameMenu : MonoBehaviour
         joystick.enabled = false;
         jumpButton.enabled = false;
         playerCanvas.SetActive(false);
+        waveSpawner.enabled = false;
+        timer.enabled = false;
     }
 }

@@ -49,11 +49,11 @@ public class WaveSpawner : MonoBehaviour
     private void SpawnEnemies()
     {
         GameObject enemy = EnemyPool.instance.GetPooledEnemy();
+        _spawnInterval -= Time.deltaTime;
+        if (!(_spawnInterval <= 0)) return;
         
         if (enemy != null)
         {
-            _spawnInterval -= Time.deltaTime;
-            if (!(_spawnInterval <= 0)) return;
             enemy.transform.position = spawnLocations[Random.Range(0, 6)].position;
             enemy.SetActive(true);
         }
