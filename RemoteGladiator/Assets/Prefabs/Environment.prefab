@@ -1,48 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1437579212
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1437579213}
-  - component: {fileID: 1437579214}
-  m_Layer: 0
-  m_Name: Occlusion Culling
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1437579213
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437579212}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 102920651960135225}
-  m_RootOrder: 669
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!192 &1437579214
-OcclusionArea:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437579212}
-  serializedVersion: 2
-  m_Size: {x: 62.163456, y: 18.777664, z: 64.83014}
-  m_Center: {x: 15.979485, y: 1.9748147, z: 10.112675}
-  m_IsViewVolume: 1
 --- !u!1 &102920651960135224
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +697,6 @@ Transform:
   - {fileID: 1476219787424820676}
   - {fileID: 5006602377721024222}
   - {fileID: 8988266579538643839}
-  - {fileID: 1437579213}
   - {fileID: 8196014199080323546}
   - {fileID: 3862918491978632671}
   - {fileID: 6174835708757505695}
@@ -43755,7 +43711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_RootOrder
-      value: 674
+      value: 673
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_LocalScale.x
@@ -43822,7 +43778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_RootOrder
-      value: 671
+      value: 670
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_LocalScale.x
@@ -43956,7 +43912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_RootOrder
-      value: 672
+      value: 671
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_LocalScale.x
@@ -44023,7 +43979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_RootOrder
-      value: 670
+      value: 669
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_LocalScale.x
@@ -44090,7 +44046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_RootOrder
-      value: 673
+      value: 672
       objectReference: {fileID: 0}
     - target: {fileID: 4796727144638148, guid: bd97c05e714e4e44a95ebdeaa26a6c9f, type: 3}
       propertyPath: m_LocalScale.x

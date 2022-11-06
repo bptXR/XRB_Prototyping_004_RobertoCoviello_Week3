@@ -329,7 +329,6 @@ GameObject:
   - component: {fileID: 109434732395451517}
   - component: {fileID: -2104319965085353480}
   - component: {fileID: 1161282351603944230}
-  - component: {fileID: 2893497122592352595}
   m_Layer: 11
   m_Name: Left Hand Prefab
   m_TagString: LeftHand
@@ -390,23 +389,6 @@ MonoBehaviour:
   triggerActionRef: {fileID: -4289430672226363583, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
   gripActionRef: {fileID: 6558622148059887818, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
---- !u!114 &2893497122592352595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109434732395284509}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75428945e53eff14c922cb8f0d96a0dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handAnimator: {fileID: -2104319965085353480}
-  triggerActionRef: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  gripActionRef: {fileID: -6131295136447488360, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
 --- !u!1 &109434732395284511
 GameObject:
@@ -623,9 +605,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 109434732395451463}
+  - component: {fileID: 9043448293000059555}
+  - component: {fileID: 2763895063567294248}
   m_Layer: 11
   m_Name: hands:b_l_index_ignore
-  m_TagString: Pointer
+  m_TagString: FingerTip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -645,6 +629,34 @@ Transform:
   m_Father: {fileID: 109434732395451457}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &9043448293000059555
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109434732395284583}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.01
+  m_Center: {x: 0.01, y: 0, z: 0}
+--- !u!114 &2763895063567294248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109434732395284583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48c746eeb9e30a4bb802ad0e4c44e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerActionReference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
+  sphereCollider: {fileID: 9043448293000059555}
 --- !u!1 &109434732395284585
 GameObject:
   m_ObjectHideFlags: 0

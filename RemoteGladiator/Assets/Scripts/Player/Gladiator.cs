@@ -10,7 +10,7 @@ namespace Player
         [SerializeField] private float maxHealth = 100;
         [SerializeField] private AudioClip[] getHitSounds;
         [SerializeField] private AudioClip dieSound;
-        [SerializeField] private AudioClip gameOverSound;
+        [SerializeField] private AudioClip runSound;
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private HealthBar healthBar;
 
@@ -18,15 +18,16 @@ namespace Player
         [SerializeField] private float moveSpeed = 5;
         [SerializeField] private float rotationSpeed = 5;
         [SerializeField] private CharacterController characterController;
+        [SerializeField] private GameMenu gameMenu;
 
         public bool isDead;
-        
+
         private Vector3 _playerVelocity;
         private Vector2 _joystickValue;
         private Animator _anim;
         private float _gravityValue = -50.0f;
         private float _jumpHeight = 1.5f;
-        public float currentHealth;
+        private float _currentHealth;
         private int _damage = 10;
 
         private bool _groundedPlayer;
@@ -40,7 +41,7 @@ namespace Player
         {
             _anim = GetComponent<Animator>();
             Time.timeScale = 1f;
-            currentHealth = maxHealth;
+            _currentHealth = maxHealth;
             healthBar.SetMaxHealth(maxHealth);
             audioSource.enabled = true;
         }
@@ -103,31 +104,40 @@ namespace Player
 
             if (isDead) return;
             TakeDamage(_damage);
+            Sounds(getHitSounds);
         }
 
         private void OnTriggerStay(Collider other)
         {
-            TakeDamage(0.1f);
+            if (isDead) return;
+            TakeDamage(0.2f);
+        }
+
+        public void RunSound()
+        {
+            audioSource.PlayOneShot(runSound);
         }
 
         private void TakeDamage(float damage)
         {
-            currentHealth -= damage;
+            _currentHealth -= damage;
 
-            if (currentHealth <= 0)
+            if (_currentHealth <= 0)
             {
                 isDead = true;
-                GameOver();
+                gameMenu.GameOverScreen();
+                audioSource.PlayOneShot(dieSound);
             }
             else
             {
-                healthBar.SetHealth(currentHealth);
+                healthBar.SetHealth(_currentHealth);
             }
         }
 
-        private void GameOver()
+        private void Sounds(AudioClip[] clips)
         {
-            
+            AudioClip clip = clips[Random.Range(0, clips.Length)];
+            audioSource.PlayOneShot(clip);
         }
     }
 }

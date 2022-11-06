@@ -935,7 +935,6 @@ GameObject:
   - component: {fileID: 5686134208185136530}
   - component: {fileID: 1982483181566240552}
   - component: {fileID: 1435351531652278856}
-  - component: {fileID: -1998808843918077246}
   m_Layer: 11
   m_Name: Right Hand Prefab
   m_TagString: RightHand
@@ -996,23 +995,6 @@ MonoBehaviour:
   triggerActionRef: {fileID: 7904272356298805229, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
   gripActionRef: {fileID: -1758520528963094988, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
---- !u!114 &-1998808843918077246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5686134208185362930}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75428945e53eff14c922cb8f0d96a0dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handAnimator: {fileID: 1982483181566240552}
-  triggerActionRef: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  gripActionRef: {fileID: 187161793506945269, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
 --- !u!1 &5686134208185362932
 GameObject:
