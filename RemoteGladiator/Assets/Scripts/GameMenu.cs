@@ -1,13 +1,10 @@
+using System.Collections.Generic;
 using Interaction;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMenu : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip gameOverSound;
-    [SerializeField] private AudioClip gameSound;
-    [SerializeField] private AudioClip menuSound;
-
     [SerializeField] private GameObject startScreen;
     [SerializeField] private GameObject restartScreen;
     [SerializeField] private GameObject playerCanvas;
@@ -17,20 +14,15 @@ public class GameMenu : MonoBehaviour
     [SerializeField] private XRJoystick joystick;
     [SerializeField] private XRPushButton jumpButton;
 
-    private int _startingRound = 1;
-    private int _currentRound;
-    
     private void Awake()
     {
-        joystick.enabled = false;
-        jumpButton.enabled = false;
         restartScreen.SetActive(false);
         playerCanvas.SetActive(false);
-    }
-
-    private void Start()
-    {
-        audioSource.PlayOneShot(menuSound);
+        startScreen.SetActive(true);
+        waveSpawner.enabled = false;
+        jumpButton.enabled = false;
+        joystick.enabled = false;
+        timer.enabled = false;
     }
 
     public void OnStartPressed()
@@ -38,21 +30,20 @@ public class GameMenu : MonoBehaviour
         playerCanvas.SetActive(true);
         startScreen.SetActive(false);
         waveSpawner.enabled = true;
+        jumpButton.enabled = true;
+        joystick.enabled = true;
         timer.enabled = true;
-        _currentRound = _startingRound;
     }
 
-    public void OnReloadPressed()
-    {
-        
-    }
-
+    public void OnReloadPressed() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    
     public void GameOverScreen()
     {
-        joystick.enabled = false;
-        jumpButton.enabled = false;
+        restartScreen.SetActive(true);
         playerCanvas.SetActive(false);
         waveSpawner.enabled = false;
+        jumpButton.enabled = false;
+        joystick.enabled = false;
         timer.enabled = false;
     }
 }

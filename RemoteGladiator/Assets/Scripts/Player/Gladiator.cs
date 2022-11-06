@@ -11,6 +11,7 @@ namespace Player
         [SerializeField] private AudioClip[] getHitSounds;
         [SerializeField] private AudioClip dieSound;
         [SerializeField] private AudioClip runSound;
+        [SerializeField] private AudioClip jumpSound;
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private HealthBar healthBar;
 
@@ -83,6 +84,7 @@ namespace Player
             if (!_groundedPlayer) return;
             _playerVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravityValue);
             _anim.SetTrigger(Jump);
+            audioSource.PlayOneShot(jumpSound);
         }
 
         public void OnJoystickValueChangeX(float x)
@@ -125,6 +127,8 @@ namespace Player
             {
                 audioSource.PlayOneShot(dieSound);
                 isDead = true;
+                _anim.SetTrigger(Idle);
+                audioSource.enabled = false;
                 gameMenu.GameOverScreen();
             }
             else
