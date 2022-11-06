@@ -11,6 +11,8 @@ public class GameMenu : MonoBehaviour
     [SerializeField] private GameObject startScreen;
     [SerializeField] private GameObject restartScreen;
     [SerializeField] private GameObject playerCanvas;
+    [SerializeField] private Timer timer;
+    [SerializeField] private WaveSpawner waveSpawner;
 
     [SerializeField] private XRJoystick joystick;
     [SerializeField] private XRPushButton jumpButton;
@@ -35,6 +37,8 @@ public class GameMenu : MonoBehaviour
     {
         playerCanvas.SetActive(true);
         startScreen.SetActive(false);
+        waveSpawner.enabled = true;
+        timer.enabled = true;
         _currentRound = _startingRound;
     }
 

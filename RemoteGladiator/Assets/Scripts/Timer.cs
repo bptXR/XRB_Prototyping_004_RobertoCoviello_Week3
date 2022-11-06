@@ -10,20 +10,11 @@ public class Timer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private WaveSpawner waveSpawner;
 
-    private void Awake()
-    {
-        timeLeft = waveSpawner.waveDuration;
-    }
+    private void Awake() => timeLeft = (float)waveSpawner.waveDuration;
 
-    private void OnEnable()
-    {
-        timerOn = true;
-    }
-    
-    private void OnDisable()
-    {
-        timerOn = false;
-    }
+    private void OnEnable() => timerOn = true;
+
+    private void OnDisable() => timerOn = false;
 
     private void Update()
     {
@@ -47,12 +38,13 @@ public class Timer : MonoBehaviour
 
         float seconds = Mathf.FloorToInt(currentTime % 60);
 
-        timerText.SetText(string.Format("Time Left: {0}", seconds));
+        timerText.SetText($"Time Left: {seconds}");
     }
 
     private void RestartTimer()
     {
         waveSpawner.StartNextWave();
-        timeLeft = waveSpawner.waveDuration;
+        timeLeft = (float)waveSpawner.waveDuration;
+        timerOn = true;
     }
 }

@@ -5,9 +5,8 @@ using UnityEngine;
 public class EnemyPool : MonoBehaviour
 {
     public static EnemyPool instance;
-
-    private List<GameObject> pooledEnemies = new();
-    private int amountOfEnemies = 20;
+    public int amountOfEnemies = 20;
+    public List<GameObject> pooledEnemies = new();
 
     [SerializeField] private GameObject enemyPrefab;
 

@@ -38,7 +38,6 @@ public class Enemy : MonoBehaviour
         _enemyNavMesh.SetDestination(_playerTransform.position);
         if (!_gladiator.isDead) return;
         StopEnemy();
-        print("Player Dead");
     }
 
     private void OnTriggerEnter(Collider other)
