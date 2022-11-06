@@ -2,14 +2,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(BoxCollider))]
-public class ButtonTrigger : Button
+namespace Interaction
 {
-    private void OnTriggerEnter(Collider other)
+    [RequireComponent(typeof(BoxCollider))]
+    public class ButtonTrigger : Button
     {
-        if (other.CompareTag("FingerTip"))
+        private void OnTriggerEnter(Collider other)
         {
-            ExecuteEvents.Execute(gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+            if (other.CompareTag("FingerTip"))
+            {
+                ExecuteEvents.Execute(gameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+            }
         }
     }
 }

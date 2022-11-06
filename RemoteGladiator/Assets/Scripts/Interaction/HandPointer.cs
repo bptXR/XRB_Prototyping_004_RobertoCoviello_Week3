@@ -1,28 +1,28 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(SphereCollider))]
-public class HandPointer : MonoBehaviour
+namespace Interaction
 {
-    [SerializeField] private InputActionReference triggerActionReference;
-    [SerializeField] private SphereCollider sphereCollider;
-
-    private void OnEnable()
+    [RequireComponent(typeof(SphereCollider))]
+    public class HandPointer : MonoBehaviour
     {
-        triggerActionReference.action.performed += OnActionPerformed;
-        triggerActionReference.action.canceled += OnActionCanceled;
-    }
+        [SerializeField] private InputActionReference triggerActionReference;
+        [SerializeField] private SphereCollider sphereCollider;
 
-    private void OnActionPerformed(InputAction.CallbackContext obj) => sphereCollider.enabled = true;
+        private void OnEnable()
+        {
+            triggerActionReference.action.performed += OnActionPerformed;
+            triggerActionReference.action.canceled += OnActionCanceled;
+        }
 
-    private void OnActionCanceled(InputAction.CallbackContext obj) => sphereCollider.enabled = false;
+        private void OnActionPerformed(InputAction.CallbackContext obj) => sphereCollider.enabled = true;
 
-    private void OnDisable()
-    {
-        triggerActionReference.action.performed -= OnActionPerformed;
-        triggerActionReference.action.canceled -= OnActionCanceled;
+        private void OnActionCanceled(InputAction.CallbackContext obj) => sphereCollider.enabled = false;
+
+        private void OnDisable()
+        {
+            triggerActionReference.action.performed -= OnActionPerformed;
+            triggerActionReference.action.canceled -= OnActionCanceled;
+        }
     }
 }

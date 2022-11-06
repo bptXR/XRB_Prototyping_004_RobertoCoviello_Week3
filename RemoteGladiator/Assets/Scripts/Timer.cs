@@ -1,16 +1,28 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TimerRestart : MonoBehaviour
+public class Timer : MonoBehaviour
 {
-    public float timeLeft = 10;
+    public float timeLeft = 30;
     [SerializeField] private bool timerOn;
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private WaveSpawner waveSpawner;
+
+    private void Awake()
+    {
+        timeLeft = waveSpawner.waveDuration;
+    }
 
     private void OnEnable()
     {
         timerOn = true;
+    }
+    
+    private void OnDisable()
+    {
+        timerOn = false;
     }
 
     private void Update()
@@ -25,7 +37,7 @@ public class TimerRestart : MonoBehaviour
         {
             timeLeft = 0;
             timerOn = false;
-            RestartGame();
+            RestartTimer();
         }
     }
 
@@ -35,11 +47,12 @@ public class TimerRestart : MonoBehaviour
 
         float seconds = Mathf.FloorToInt(currentTime % 60);
 
-        timerText.SetText(string.Format("{0}", seconds));
+        timerText.SetText(string.Format("Time Left: {0}", seconds));
     }
 
-    private void RestartGame()
+    private void RestartTimer()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        waveSpawner.StartNextWave();
+        timeLeft = waveSpawner.waveDuration;
     }
 }

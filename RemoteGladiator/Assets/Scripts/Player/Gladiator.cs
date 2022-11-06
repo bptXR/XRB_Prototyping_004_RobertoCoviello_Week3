@@ -100,7 +100,6 @@ namespace Player
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Enemy")) return;
-            print("collided");
 
             if (isDead) return;
             TakeDamage(_damage);
@@ -124,9 +123,9 @@ namespace Player
 
             if (_currentHealth <= 0)
             {
+                audioSource.PlayOneShot(dieSound);
                 isDead = true;
                 gameMenu.GameOverScreen();
-                audioSource.PlayOneShot(dieSound);
             }
             else
             {

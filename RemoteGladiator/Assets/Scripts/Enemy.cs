@@ -8,7 +8,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] attackSounds;
-
+    
+    private WaveSpawner _waveSpawner;
     private NavMeshAgent _enemyNavMesh;
     private Transform _playerTransform;
     private Gladiator _gladiator;
@@ -18,15 +19,18 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
+        _waveSpawner = FindObjectOfType<WaveSpawner>();
         _enemyNavMesh = GetComponent<NavMeshAgent>();
         _gladiator = FindObjectOfType<Gladiator>();
         _playerTransform = _gladiator.transform;
         _anim = GetComponent<Animator>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        _enemyNavMesh.speed = Random.Range(1.5f, 2.8f);
+        var speed = Random.Range(1.5f, 2.8f);
+        speed += 0.1f * _waveSpawner.currWave;
+        _enemyNavMesh.speed = speed;
     }
 
     private void Update()
