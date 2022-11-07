@@ -15,15 +15,11 @@ public class WaveSpawner : MonoBehaviour
     public int currWave = 0;
     public double waveDuration = 30;
 
-    private void Awake()
-    {
-        currWave = 0;
-    }
+    private void Awake() => currWave = 0;
 
-    private void OnEnable()
-    {
-        StartNextWave();
-    }
+
+    private void OnEnable() => StartNextWave();
+
 
     public void StartNextWave()
     {

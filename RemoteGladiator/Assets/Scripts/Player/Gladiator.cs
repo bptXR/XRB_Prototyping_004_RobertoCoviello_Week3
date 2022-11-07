@@ -77,6 +77,10 @@ namespace Player
             {
                 _anim.SetTrigger(Idle);
             }
+
+            if (!(gameObject.transform.position.y < -10)) return;
+            _currentHealth = 0;
+            TakeDamage(0);
         }
 
         public void OnJumpButtonPressed()
@@ -114,10 +118,7 @@ namespace Player
             TakeDamage(0.2f);
         }
 
-        public void RunSound()
-        {
-            audioSource.PlayOneShot(runSound);
-        }
+        public void RunSound() => audioSource.PlayOneShot(runSound);
 
         private void TakeDamage(float damage)
         {

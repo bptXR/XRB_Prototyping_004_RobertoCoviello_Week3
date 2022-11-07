@@ -9,6 +9,7 @@ TagManager:
   - Pointer
   - FingerTip
   - Enemy
+  - LineOfDeath
   layers:
   - Default
   - TransparentFX
