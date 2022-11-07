@@ -108,29 +108,30 @@ namespace Player
             if (!other.CompareTag("Enemy")) return;
 
             if (isDead) return;
-            TakeDamage(_damage);
+            StartCoroutine(TakeDamage(_damage));
             Sounds(getHitSounds);
         }
 
         private void OnTriggerStay(Collider other)
         {
             if (isDead) return;
-            TakeDamage(0.2f);
+            StartCoroutine(TakeDamage(0.2f));
         }
 
         public void RunSound() => audioSource.PlayOneShot(runSound);
 
-        private void TakeDamage(float damage)
+        private IEnumerator TakeDamage(float damage)
         {
             _currentHealth -= damage;
 
             if (_currentHealth <= 0)
             {
-                audioSource.PlayOneShot(dieSound);
                 isDead = true;
                 _anim.SetTrigger(Idle);
-                audioSource.enabled = false;
                 gameMenu.GameOverScreen();
+                audioSource.PlayOneShot(dieSound);
+                yield return new WaitWhile(() => audioSource.isPlaying);
+                audioSource.enabled = false;
             }
             else
             {
