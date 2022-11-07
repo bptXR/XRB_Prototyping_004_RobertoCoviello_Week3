@@ -11,15 +11,14 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private Transform[] spawnLocations;
 
     private bool _canSpawn;
+    private float _spawnTimer = 1f;
 
     public int currWave = 0;
     public double waveDuration = 30;
 
     private void Awake() => currWave = 0;
 
-
     private void OnEnable() => StartNextWave();
-
 
     public void StartNextWave()
     {
@@ -46,8 +45,13 @@ public class WaveSpawner : MonoBehaviour
 
         if (enemy != null)
         {
+            _spawnTimer -= Time.deltaTime;
+            if (!(_spawnTimer <= 0)) return;
             enemy.transform.position = spawnLocations[Random.Range(0, 6)].position;
             enemy.SetActive(true);
+            _spawnTimer = 1.5f - (currWave * 0.05f);
+            if (!(_spawnTimer <= 0)) return;
+            _spawnTimer = 0;
         }
         else
         {

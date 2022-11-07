@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         _enemyNavMesh.speed = speed;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         _enemyNavMesh.SetDestination(_playerTransform.position);
         if (!_gladiator.isDead) return;
