@@ -120,13 +120,9 @@ namespace Interaction
         {
             base.ProcessInteractable(updatePhase);
 
-            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
-            {
-                if (isSelected)
-                {
-                    UpdateValue();
-                }
-            }
+            if (updatePhase != XRInteractionUpdateOrder.UpdatePhase.Dynamic) return;
+            if (!isSelected) return;
+            UpdateValue();
         }
 
         Vector3 GetLookDirection()
@@ -169,10 +165,7 @@ namespace Interaction
             }
             else
             {
-                if (stickValue.magnitude > 1.0f)
-                {
-                    stickValue.Normalize();
-                }
+                if (stickValue.magnitude > 1.0f) stickValue.Normalize();
             }
 
             leftRightAngle = stickValue.x * signX * maxAngle;
@@ -210,9 +203,6 @@ namespace Interaction
             handle.up = (transform.up * yComp) + (transform.right * xComp) + (transform.forward * zComp);
         }
 
-        void OnValidate()
-        {
-            deadZoneAngle = Mathf.Min(deadZoneAngle, maxAngle * MaxDeadZonePercent);
-        }
+        void OnValidate() => deadZoneAngle = Mathf.Min(deadZoneAngle, maxAngle * MaxDeadZonePercent);
     }
 }

@@ -10,7 +10,6 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private TextMeshProUGUI wavesText;
     [SerializeField] private Transform[] spawnLocations;
 
-    private double _spawnInterval;
     private bool _canSpawn;
 
     public int currWave = 0;
@@ -19,7 +18,6 @@ public class WaveSpawner : MonoBehaviour
     private void Awake()
     {
         currWave = 0;
-        _spawnInterval = waveDuration / EnemyPool.instance.amountOfEnemies;
     }
 
     private void OnEnable()
@@ -49,9 +47,7 @@ public class WaveSpawner : MonoBehaviour
     private void SpawnEnemies()
     {
         GameObject enemy = EnemyPool.instance.GetPooledEnemy();
-        _spawnInterval -= Time.deltaTime;
-        if (!(_spawnInterval <= 0)) return;
-        
+
         if (enemy != null)
         {
             enemy.transform.position = spawnLocations[Random.Range(0, 6)].position;
